@@ -9,6 +9,7 @@ export type CreatePostInput = {
   coverImageUrl?: string | null;
   tags?: string[];
   published?: boolean;
+  sourceUrls?: string[]; // unrendered in v1; kept for review/attribution
 };
 
 /**
@@ -34,6 +35,7 @@ export async function createPostCore(input: CreatePostInput): Promise<string> {
     content: JSON.stringify(input.content),
     coverImageUrl: input.coverImageUrl ?? null,
     tags: (input.tags ?? []).map((t) => t.trim().toLowerCase()).filter(Boolean).slice(0, 10),
+    sourceUrls: (input.sourceUrls ?? []).slice(0, 5),
     published: input.published !== false,
     likeCount: 0,
     commentCount: 0,

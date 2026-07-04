@@ -38,3 +38,4 @@ next-env.d.ts
 # secrets
 .env
 service-account*.json
+.vercel

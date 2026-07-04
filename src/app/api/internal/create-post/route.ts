@@ -20,6 +20,8 @@ export async function POST(req: NextRequest) {
     title?: string;
     content?: object;
     tags?: string[];
+    coverImageUrl?: string;
+    sourceUrls?: string[];
   };
   try {
     body = await req.json();
@@ -34,12 +36,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Only accept covers that live in our own Cloudinary account.
+  const coverPrefix = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/`;
+  const coverImageUrl =
+    body.coverImageUrl && body.coverImageUrl.startsWith(coverPrefix)
+      ? body.coverImageUrl
+      : null;
+
   try {
     const postId = await createPostCore({
       authorId: body.authorId,
       title: body.title,
       content: body.content,
       tags: body.tags,
+      coverImageUrl,
+      sourceUrls: body.sourceUrls,
       published: true,
     });
     return NextResponse.json({ postId }, { status: 201 });
