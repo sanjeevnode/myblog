@@ -80,7 +80,7 @@ export default async function ExplorePage({
           })}
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 items-start gap-6 md:grid-cols-2">
           {posts.length === 0 && <p className="text-muted-foreground">No posts match.</p>}
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
