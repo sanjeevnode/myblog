@@ -31,10 +31,12 @@ export function PostCard({ post }: { post: Post }) {
           <p className="mt-1 text-sm text-muted-foreground">
             {post.authorName} · {formatDate(post.createdAt)}
           </p>
-          <p className="mt-3 text-[0.95rem] leading-relaxed">
-            {excerptFromContent(post.content)}
+          {/* Text-only cards get a much longer excerpt so they carry similar
+              visual weight to image cards */}
+          <p className="mt-3 text-base leading-relaxed">
+            {excerptFromContent(post.content, post.coverImageUrl ? 220 : 600)}
           </p>
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-4 text-sm text-muted-foreground">
             {post.likeCount} likes · {post.commentCount} comments
           </p>
         </div>
