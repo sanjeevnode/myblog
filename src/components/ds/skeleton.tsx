@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 
-/** Grayscale pulse block matching the editorial style (sharp corners). */
+/** Grayscale pulse block matching the editorial style (sharp corners).
+    Dark enough (#d9d9d9) to read clearly against the white page. */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse bg-secondary", className)} />;
+  return <div className={cn("animate-pulse bg-[#d9d9d9]", className)} />;
 }
 
 export function PostCardSkeleton({ withImage = true }: { withImage?: boolean }) {
