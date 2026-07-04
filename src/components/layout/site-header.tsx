@@ -3,6 +3,7 @@ import type { SessionUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
+import { MobileSidebar } from "@/components/layout/mobile-sidebar";
 
 export function SiteHeader({ user }: { user: SessionUser | null }) {
   return (
@@ -11,7 +12,9 @@ export function SiteHeader({ user }: { user: SessionUser | null }) {
         <Link href="/" className="font-heading text-2xl font-bold">
           MyBlog
         </Link>
-        <nav className="flex items-center gap-2">
+
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-2 md:flex">
           <Button size="sm" render={<Link href="/explore" />}>
             Explore
           </Button>
@@ -34,6 +37,12 @@ export function SiteHeader({ user }: { user: SessionUser | null }) {
             </Button>
           )}
         </nav>
+
+        {/* Mobile: bell stays visible, everything else in the sidebar */}
+        <div className="flex items-center gap-2 md:hidden">
+          {user && <NotificationsBell uid={user.uid} />}
+          <MobileSidebar signedIn={!!user} isAdmin={user?.role === "admin"} />
+        </div>
       </div>
     </header>
   );
