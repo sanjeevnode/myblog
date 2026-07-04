@@ -20,9 +20,9 @@ export default async function HomePage({
   return (
     <>
       <SiteHeader user={user} />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-4xl font-bold">Latest posts</h1>
-        <div className="mt-8 space-y-8">
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
           {feed.posts.length === 0 && (
             <p className="text-muted-foreground">No posts yet.</p>
           )}

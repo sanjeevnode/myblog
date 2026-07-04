@@ -27,7 +27,7 @@ export default async function ExplorePage({
   return (
     <>
       <SiteHeader user={user} />
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-4xl font-bold">Explore</h1>
 
         <form method="GET" action="/explore" className="mt-6 flex gap-2">
@@ -80,7 +80,7 @@ export default async function ExplorePage({
           })}
         </div>
 
-        <div className="mt-8 space-y-8">
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
           {posts.length === 0 && <p className="text-muted-foreground">No posts match.</p>}
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
