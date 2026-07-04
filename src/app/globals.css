@@ -55,6 +55,8 @@
     --sidebar-accent-foreground: #ffffff;
     --sidebar-border: #000000;
     --sidebar-ring: #000000;
+    --highlight: oklch(0.852 0.199 91.936);
+    --brand: oklch(0.623 0.214 259.815);
   }
   * {
     border-color: var(--border);
@@ -70,5 +72,9 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-lora), Georgia, serif;
     font-weight: 700;
+  }
+  .dark {
+    --highlight: oklch(0.852 0.199 91.936);
+    --brand: oklch(0.707 0.165 254.624);
   }
 }

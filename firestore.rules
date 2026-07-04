@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+    function isPostAuthor(postId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/posts/$(postId)).data.authorId == request.auth.uid;
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      // role and isActive are server-only (Admin SDK bypasses rules).
+      allow create: if signedIn() && request.auth.uid == uid
+        && !("role" in request.resource.data)
+        && !("isActive" in request.resource.data);
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(["displayName", "photoURL"]);
+      allow delete: if false;
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if signedIn()
+        && (resource.data.authorId == request.auth.uid || isAdmin());
+    }
+
+    match /likes/{likeId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && likeId == request.resource.data.postId + "_" + request.auth.uid;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.authorId == request.auth.uid;
+      // Comment author, the post's owner, or an admin may delete.
+      allow delete: if signedIn()
+        && (resource.data.authorId == request.auth.uid
+            || isPostAuthor(resource.data.postId)
+            || isAdmin());
+      allow update: if false; // immutable in v1
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if signedIn() && resource.data.recipientId == request.auth.uid;
+      // Only the recipient may mark their notification read; creation is server-side.
+      allow update: if signedIn()
+        && resource.data.recipientId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["read"]);
+      allow create, delete: if false;
+    }
+
+    match /restorationRequests/{requestId} {
+      // Server-only (Admin SDK); deactivated users can't hold a valid session anyway.
+      allow read, write: if false;
+    }
+  }
+}
