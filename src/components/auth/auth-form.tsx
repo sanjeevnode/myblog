@@ -69,11 +69,19 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4">
+    <main className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-10">
+      <Link href="/" className="mb-6 self-center font-heading text-4xl font-bold">
+        MyBlog
+      </Link>
       <Panel className="p-8">
         <h1 className="text-3xl font-bold">
           {mode === "login" ? "Sign in" : "Create account"}
         </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {mode === "login"
+            ? "Welcome back to MyBlog."
+            : "Join MyBlog to write, like and comment."}
+        </p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           {mode === "signup" && (
             <div className="space-y-1.5">
