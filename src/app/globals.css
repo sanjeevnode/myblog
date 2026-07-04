@@ -1,0 +1,74 @@
+@import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  /* Reference-style hard shadow: visible bottom/right edge, primary containers only */
+  .shadow-panel {
+    box-shadow: 4px 4px 0 0 #000;
+  }
+}
+
+@layer base {
+  .theme {
+    --font-heading: var(--font-lora), Georgia, serif;
+    --font-sans: var(--font-sans);
+  }
+  /*
+   * Strict editorial black & white theme (see plan.md UI spec).
+   * Only #000, #fff and grayscale. #6b6b6b for meta text. No dark mode in v1.
+   */
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+    --primary: #000000;
+    --primary-foreground: #ffffff;
+    --secondary: #f5f5f5;
+    --secondary-foreground: #000000;
+    --muted: #f5f5f5;
+    --muted-foreground: #6b6b6b;
+    --accent: #000000;
+    --accent-foreground: #ffffff;
+    --destructive: #000000;
+    --border: #000000;
+    --input: #000000;
+    --ring: #000000;
+    --chart-1: #dedede;
+    --chart-2: #6b6b6b;
+    --chart-3: #4a4a4a;
+    --chart-4: #2e2e2e;
+    --chart-5: #111111;
+    --radius: 0rem;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #000000;
+    --sidebar-primary: #000000;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #000000;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: #000000;
+    --sidebar-ring: #000000;
+  }
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+    border-radius: 0 !important; /* hard rule: zero radius everywhere */
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-lora), Georgia, serif;
+    font-weight: 700;
+  }
+}
