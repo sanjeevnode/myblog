@@ -25,6 +25,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   async function establishSession(idToken: string) {
     const result = await signInWithIdToken(idToken);
@@ -33,6 +34,9 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       router.push(`/deactivated?uid=${result.uid}`);
       return;
     }
+    // Keep a full-screen indicator up while the app navigates and refreshes —
+    // this component stays mounted until the feed's server render lands.
+    setRedirecting(true);
     router.push("/");
     router.refresh();
   }
@@ -68,6 +72,20 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     }
   }
 
+  if (redirecting) {
+    return (
+      <main className="flex min-h-[80vh] flex-col items-center justify-center gap-4 px-4">
+        <span className="font-heading text-4xl font-bold">MyBlog</span>
+        <div className="flex items-center gap-3 border-2 border-border px-6 py-4">
+          <span className="size-3 animate-pulse bg-primary" />
+          <span className="text-sm font-medium">
+            {mode === "login" ? "Signing you in…" : "Setting up your account…"}
+          </span>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-10">
       <Link href="/" className="mb-6 self-center font-heading text-4xl font-bold">
@@ -98,7 +116,9 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
           </div>
           <Button type="submit" variant="solid" className="w-full" disabled={busy}>
-            {mode === "login" ? "Sign in" : "Sign up"}
+            {busy
+              ? mode === "login" ? "Signing in…" : "Creating account…"
+              : mode === "login" ? "Sign in" : "Sign up"}
           </Button>
         </form>
         <Button onClick={google} className="mt-3 w-full" disabled={busy}>
