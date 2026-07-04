@@ -73,6 +73,48 @@
     font-family: var(--font-lora), Georgia, serif;
     font-weight: 700;
   }
+}
+
+/* Rendered post body + editor content share the same editorial typography */
+@layer components {
+  .article-content, .prose-editor .ProseMirror {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .article-content > * + *, .prose-editor .ProseMirror > * + * {
+    margin-top: 0.9em;
+  }
+  .article-content h1, .prose-editor .ProseMirror h1 { font-size: 2rem; margin-top: 1.4em; }
+  .article-content h2, .prose-editor .ProseMirror h2 { font-size: 1.5rem; margin-top: 1.3em; }
+  .article-content h3, .prose-editor .ProseMirror h3 { font-size: 1.25rem; margin-top: 1.2em; }
+  .article-content blockquote, .prose-editor .ProseMirror blockquote {
+    border-left: 3px solid #000;
+    padding-left: 1rem;
+    color: #6b6b6b;
+  }
+  .article-content ul, .prose-editor .ProseMirror ul { list-style: disc; padding-left: 1.5rem; }
+  .article-content ol, .prose-editor .ProseMirror ol { list-style: decimal; padding-left: 1.5rem; }
+  .article-content pre, .prose-editor .ProseMirror pre {
+    border: 2px solid #000;
+    background: #f5f5f5;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+  }
+  .article-content code, .prose-editor .ProseMirror code {
+    background: #f5f5f5;
+    padding: 0.1em 0.3em;
+    font-size: 0.9em;
+  }
+  .article-content pre code, .prose-editor .ProseMirror pre code { background: transparent; padding: 0; }
+  .article-content a, .prose-editor .ProseMirror a { text-decoration: underline; }
+  .prose-editor .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: #6b6b6b;
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
   .dark {
     --highlight: oklch(0.852 0.199 91.936);
     --brand: oklch(0.707 0.165 254.624);
