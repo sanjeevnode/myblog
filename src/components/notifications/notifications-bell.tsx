@@ -23,8 +23,9 @@ import { Bell } from "lucide-react";
 
 type Notification = {
   id: string;
-  type: "like" | "comment" | "restoration_request";
+  type: "like" | "comment" | "restoration_request" | "automation";
   actorName?: string;
+  message?: string;
   postId?: string;
   read: boolean;
   createdAt?: { toDate(): Date };
@@ -39,6 +40,8 @@ function describe(n: Notification) {
       return `${who} commented on your post`;
     case "restoration_request":
       return `${who} requested account restoration`;
+    case "automation":
+      return n.message ?? "Automation update";
   }
 }
 
