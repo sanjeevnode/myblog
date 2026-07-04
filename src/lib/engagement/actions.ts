@@ -29,6 +29,7 @@ async function notify(input: {
   recipientId: string;
   type: "like" | "comment";
   actorId: string;
+  actorName: string;
   postId: string;
   commentId?: string;
 }) {
@@ -66,6 +67,7 @@ export async function toggleLike(postId: string) {
       recipientId: post.data()!.authorId,
       type: "like",
       actorId: user.uid,
+      actorName: user.displayName,
       postId,
     });
   }
@@ -97,6 +99,7 @@ export async function addComment(postId: string, content: string) {
     recipientId: postSnap.data()!.authorId,
     type: "comment",
     actorId: user.uid,
+    actorName: user.displayName,
     postId,
     commentId: commentRef.id,
   });

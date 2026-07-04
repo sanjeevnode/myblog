@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { SessionUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { NotificationsBell } from "@/components/notifications/notifications-bell";
 
 export function SiteHeader({ user }: { user: SessionUser | null }) {
   return (
@@ -19,6 +20,7 @@ export function SiteHeader({ user }: { user: SessionUser | null }) {
               <Button size="sm" render={<Link href="/write" />}>
                 Write
               </Button>
+              <NotificationsBell uid={user.uid} />
               {user.role === "admin" && (
                 <Button size="sm" render={<Link href="/admin" />}>
                   Admin

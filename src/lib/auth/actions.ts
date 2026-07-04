@@ -84,6 +84,7 @@ export async function requestRestoration(uid: string) {
       recipientId: admin.id,
       type: "restoration_request",
       actorId: uid,
+      actorName: userSnap.data()!.displayName ?? userSnap.data()!.email ?? "A user",
       requestId: req.id,
       read: false,
       createdAt: FieldValue.serverTimestamp(),
