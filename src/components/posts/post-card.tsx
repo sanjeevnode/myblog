@@ -15,8 +15,10 @@ export function PostCard({ post }: { post: Post }) {
   return (
     <Panel className="h-full">
       <Link href={`/post/${post.id}`} className="flex h-full flex-col">
-        {post.coverImageUrl && (
-          <div className="relative aspect-[2/1] w-full border-b-2 border-border">
+        {/* Image slot is always reserved so cards in a row mirror each other;
+            without a cover it stays deliberate white space. */}
+        <div className="relative aspect-[2/1] w-full border-b-2 border-border">
+          {post.coverImageUrl ? (
             <Image
               src={post.coverImageUrl}
               alt=""
@@ -24,8 +26,14 @@ export function PostCard({ post }: { post: Post }) {
               className="object-cover"
               unoptimized
             />
-          </div>
-        )}
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-background">
+              <span className="select-none font-heading text-6xl font-bold text-[#eeeeee]">
+                BG
+              </span>
+            </div>
+          )}
+        </div>
         <div className="flex flex-1 flex-col p-6">
           <h2 className="text-2xl font-bold leading-snug">{post.title}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
