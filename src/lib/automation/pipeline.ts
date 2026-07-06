@@ -3,6 +3,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
 import { createPostCore } from "@/lib/posts/create-post-core";
 import { generatePost } from "@/lib/automation/gemini";
+import { makeCover } from "@/lib/automation/cover";
 import { publishSummary } from "@/lib/automation/linkedin";
 
 export type PipelineResult = {
@@ -50,7 +51,9 @@ async function recentTitles(): Promise<string[]> {
  * request can't sleep that long, so the share happens right after publishing
  * (optionally after a short capped delay).
  */
-export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}): Promise<PipelineResult> {
+export async function runPipeline(
+  opts: { linkedinDelaySeconds?: number; generateImage?: boolean } = {}
+): Promise<PipelineResult> {
   const ownerId = process.env.OWNER_FIREBASE_UID;
   if (!ownerId) throw new Error("OWNER_FIREBASE_UID not configured");
 
@@ -63,7 +66,15 @@ export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}):
     throw err;
   }
 
-  // 2. Create the blog post as the owner
+  // 2. Cover image via pollinations.ai — best-effort, never blocks the post
+  let coverImageUrl: string | null = null;
+  if (opts.generateImage !== false) {
+    coverImageUrl = await makeCover(
+      post.imagePrompt || `clean minimal editorial tech illustration of ${post.title}, no text`
+    );
+  }
+
+  // 3. Create the blog post as the owner
   let postId: string;
   try {
     postId = await createPostCore({
@@ -71,6 +82,7 @@ export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}):
       title: post.title,
       content: post.content,
       tags: post.tags,
+      coverImageUrl,
       published: true,
     });
   } catch (err) {
@@ -78,7 +90,7 @@ export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}):
     throw err;
   }
 
-  // 3. Share on LinkedIn. Delay is capped well under the function timeout.
+  // 4. Share on LinkedIn. Delay is capped well under the function timeout.
   const delay = Math.min(Math.max(opts.linkedinDelaySeconds ?? 0, 0), 120);
   if (delay > 0) await new Promise((r) => setTimeout(r, delay * 1000));
 

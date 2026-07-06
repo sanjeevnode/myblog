@@ -102,6 +102,7 @@ focused on Technology. Each time you run:
    real trade-offs, and what a working engineer should take away. Write like a
    knowledgeable practitioner, not a press release.
 4. Write a short LinkedIn post summarizing the blog for professional sharing.
+5. Write a one-line image-generation prompt for the post's cover illustration.
 
 Output rules:
 - Output ONLY valid JSON. No markdown code fences, no preamble, no explanation
@@ -150,6 +151,11 @@ Return ONLY a JSON object with this exact shape:
       // Do not use heading level 1 - the post title is rendered separately.
     ]
   },
+  "imagePrompt": "string, ONE line describing a cover illustration for this
+    post, written for an image generation model: a clean, modern, minimal
+    editorial tech illustration of the post's core concept. Describe concrete
+    visual elements (objects, composition, style) — no text, words, letters,
+    logos or watermarks in the image.",
   "linkedinSummary": "string, plain text in this exact shape: one strong hook
     line about the topic itself (an insight or sharp observation — never
     'This post...' or 'In this post...' or any mention of the blog), a blank
@@ -172,6 +178,7 @@ export type GeneratedPost = {
   excerpt: string;
   tags: string[];
   content: { type: "doc"; content: unknown[] };
+  imagePrompt?: string;
   linkedinSummary: string;
 };
 

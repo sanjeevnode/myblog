@@ -9,7 +9,7 @@ export const maxDuration = 300;
  * Full automation run in one request: Gemini generates a post, it is published
  * to the blog as the owner, then shared on LinkedIn. Trigger from a cronjob:
  *
- *   POST /api/automation/run?linkedin_delay=5
+ *   POST /api/automation/run?linkedin_delay=5&generate_image=false
  *   Authorization: Bearer <INTERNAL_API_SECRET>
  *
  * Runs synchronously and returns { postId, title, linkedinUrn }.
@@ -27,8 +27,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "linkedin_delay must be a number" }, { status: 400 });
   }
 
+  // Cover generation defaults to on; pass generate_image=false to skip it.
+  const generateImage = req.nextUrl.searchParams.get("generate_image") !== "false";
+
   try {
-    const result = await runPipeline({ linkedinDelaySeconds });
+    const result = await runPipeline({ linkedinDelaySeconds, generateImage });
     return NextResponse.json(result, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown";
