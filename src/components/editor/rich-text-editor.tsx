@@ -2,14 +2,17 @@
 
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+// StarterKit v3 ships the Link extension — configure it there instead of
+// registering @tiptap/extension-link a second time.
 export const editorExtensions = [
-  StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
-  Link.configure({ openOnClick: false, autolink: true }),
+  StarterKit.configure({
+    heading: { levels: [1, 2, 3] },
+    link: { openOnClick: false, autolink: true },
+  }),
   Placeholder.configure({ placeholder: "Write your story…" }),
 ];
 

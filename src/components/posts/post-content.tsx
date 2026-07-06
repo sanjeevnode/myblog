@@ -1,6 +1,5 @@
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
 
 /**
  * Server-side render of Tiptap JSON through the schema serializer — never raw
@@ -11,7 +10,6 @@ export function PostContent({ content }: { content: object }) {
   try {
     html = generateHTML(content as Parameters<typeof generateHTML>[0], [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
-      Link,
     ]);
   } catch {
     html = "<p>(This post could not be rendered.)</p>";
