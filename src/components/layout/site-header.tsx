@@ -10,7 +10,7 @@ export function SiteHeader({ user }: { user: SessionUser | null }) {
     <header className="sticky top-0 z-30 border-b-2 border-border bg-background">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="font-heading text-2xl font-bold">
-          MyBlog
+          BlogGen
         </Link>
 
         {/* Desktop nav */}

@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="mt-16 border-t-2 border-border">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-heading text-xl font-bold">MyBlog</p>
+          <p className="font-heading text-xl font-bold">BlogGen</p>
           <p className="mt-1 text-sm text-muted-foreground">
             © {new Date().getFullYear()} Sanjeev Singh. All rights reserved.
           </p>

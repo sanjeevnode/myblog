@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const lora = Lora({ subsets: ["latin"], variable: "--font-lora", weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "MyBlog",
+  title: "BlogGen",
   description: "An editorial black & white blog",
 };
 

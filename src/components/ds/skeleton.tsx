@@ -25,7 +25,7 @@ export function HeaderSkeleton() {
   return (
     <div className="border-b-2 border-border">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <span className="font-heading text-2xl font-bold">MyBlog</span>
+        <span className="font-heading text-2xl font-bold">BlogGen</span>
         <Skeleton className="h-8 w-48" />
       </div>
     </div>

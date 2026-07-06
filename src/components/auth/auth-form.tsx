@@ -75,7 +75,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   if (redirecting) {
     return (
       <main className="flex min-h-[80vh] flex-col items-center justify-center gap-4 px-4">
-        <span className="font-heading text-4xl font-bold">MyBlog</span>
+        <span className="font-heading text-4xl font-bold">BlogGen</span>
         <div className="flex items-center gap-3 border-2 border-border px-6 py-4">
           <span className="size-3 animate-pulse bg-primary" />
           <span className="text-sm font-medium">
@@ -89,7 +89,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   return (
     <main className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-10">
       <Link href="/" className="mb-6 self-center font-heading text-4xl font-bold">
-        MyBlog
+        BlogGen
       </Link>
       <Panel className="p-8">
         <h1 className="text-3xl font-bold">
@@ -97,8 +97,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "login"
-            ? "Welcome back to MyBlog."
-            : "Join MyBlog to write, like and comment."}
+            ? "Welcome back to BlogGen."
+            : "Join BlogGen to write, like and comment."}
         </p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           {mode === "signup" && (
