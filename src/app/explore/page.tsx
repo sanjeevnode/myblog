@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth/session";
 import { searchPosts, getAllTags } from "@/lib/posts/queries";
-import { PostCard } from "@/components/posts/post-card";
-import { PostsMasonry } from "@/components/posts/posts-masonry";
+import { ChunkedMasonry } from "@/components/posts/infinite-feed";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -83,11 +82,7 @@ export default async function ExplorePage({
 
         <div className="mt-8">
           {posts.length === 0 && <p className="text-muted-foreground">No posts match.</p>}
-          <PostsMasonry>
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </PostsMasonry>
+          <ChunkedMasonry posts={posts} />
         </div>
       </main>
     </>
