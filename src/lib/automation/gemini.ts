@@ -108,11 +108,14 @@ Output rules:
   before or after the JSON.
 - The JSON must match the exact schema given in the user message.
 - Word count for the blog body: 600-900 words total across all content nodes.
-- The LinkedIn summary must be short and professional: one plain opening line
-  stating the topic, then 2-3 bullet points (each a single crisp sentence,
-  prefixed with "• ") carrying the key takeaways. No fluff, no "check out my
-  blog" phrasing — the link to the full post is appended automatically after
-  your text.
+- The LinkedIn summary must read like a post written by a working engineer for
+  their professional network: open with one strong, standalone hook line — an
+  insight, question, or sharp observation about the topic itself. NEVER open
+  with meta phrasing like "This post...", "In this post...", "Today's blog...",
+  "I wrote about..." or any reference to the blog. Then 2-3 bullet points
+  (each a single crisp sentence, prefixed with "• ") carrying the key
+  takeaways. No fluff, no "check out my blog" phrasing — the link to the full
+  post is appended automatically after your text.
 - Do not fabricate specific claims: no invented statistics, dates, product
   launches, paper titles, or names. Stick to well-established facts; when
   uncertain, explain concepts rather than cite specifics.
@@ -147,11 +150,13 @@ Return ONLY a JSON object with this exact shape:
       // Do not use heading level 1 - the post title is rendered separately.
     ]
   },
-  "linkedinSummary": "string, plain text in this exact shape: one opening line
-    naming the topic, a blank line, then 2-3 bullet lines each starting with
-    '• ' giving the key takeaways (one sentence each), then optionally one
-    line with 2-3 relevant hashtags. Under 80 words total. The blog link is
-    appended automatically — do not include any URL yourself."
+  "linkedinSummary": "string, plain text in this exact shape: one strong hook
+    line about the topic itself (an insight or sharp observation — never
+    'This post...' or 'In this post...' or any mention of the blog), a blank
+    line, then 2-3 bullet lines each starting with '• ' giving the key
+    takeaways (one sentence each), then optionally one line with 2-3 relevant
+    hashtags. Under 80 words total. The blog link is appended automatically —
+    do not include any URL yourself."
 }
 
 Output must be valid, parseable JSON and nothing else.`;

@@ -8,7 +8,9 @@ import { publishSummary } from "@/lib/automation/linkedin";
 export type PipelineResult = {
   postId: string;
   title: string;
+  postUrl: string;
   linkedinUrn: string | null;
+  linkedinPost: string | null;
   linkedinError: string | null;
 };
 
@@ -80,12 +82,18 @@ export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}):
   const delay = Math.min(Math.max(opts.linkedinDelaySeconds ?? 0, 0), 120);
   if (delay > 0) await new Promise((r) => setTimeout(r, delay * 1000));
 
-  const summary = `${post.linkedinSummary}\n\nRead the full post: ${
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.sanjeevnode.in"
-  }/post/${postId}`;
+  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.sanjeevnode.in"}/post/${postId}`;
+  const summary = `${post.linkedinSummary}\n\nRead the full post: ${postUrl}`;
   try {
     const urn = await publishSummary(summary);
-    return { postId, title: post.title, linkedinUrn: urn, linkedinError: null };
+    return {
+      postId,
+      title: post.title,
+      postUrl,
+      linkedinUrn: urn,
+      linkedinPost: summary,
+      linkedinError: null,
+    };
   } catch (err) {
     // Blog post succeeded but LinkedIn failed — must not fail silently.
     const message = err instanceof Error ? err.message : String(err);
@@ -94,6 +102,13 @@ export async function runPipeline(opts: { linkedinDelaySeconds?: number } = {}):
       `Automation: post '${post.title}' was published to the blog, but the LinkedIn share failed: ${message}`,
       postId
     );
-    return { postId, title: post.title, linkedinUrn: null, linkedinError: message };
+    return {
+      postId,
+      title: post.title,
+      postUrl,
+      linkedinUrn: null,
+      linkedinPost: summary,
+      linkedinError: message,
+    };
   }
 }
