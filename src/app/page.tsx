@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getFeedPosts } from "@/lib/posts/queries";
 import { PostCard } from "@/components/posts/post-card";
+import { PostsMasonry } from "@/components/posts/posts-masonry";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
 
@@ -22,13 +23,15 @@ export default async function HomePage({
       <SiteHeader user={user} />
       <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-4xl font-bold">Latest posts</h1>
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-8">
           {feed.posts.length === 0 && (
             <p className="text-muted-foreground">No posts yet.</p>
           )}
-          {feed.posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          <PostsMasonry>
+            {feed.posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </PostsMasonry>
         </div>
         {feed.nextCursor && (
           <div className="mt-10">

@@ -12,9 +12,13 @@ export default function ExploreLoading() {
           <Skeleton className="h-8 w-20" />
           <Skeleton className="h-8 w-28" />
         </div>
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <PostCardSkeleton withImage={false} />
-          <PostCardSkeleton />
+        <div className="mt-8 flex gap-6">
+          <div className="min-w-0 flex-1 space-y-6">
+            <PostCardSkeleton withImage={false} />
+          </div>
+          <div className="hidden min-w-0 flex-1 sm:block">
+            <PostCardSkeleton />
+          </div>
         </div>
       </main>
     </>
