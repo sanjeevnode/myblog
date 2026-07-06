@@ -52,7 +52,11 @@ async function recentTitles(): Promise<string[]> {
  * (optionally after a short capped delay).
  */
 export async function runPipeline(
-  opts: { linkedinDelaySeconds?: number; generateImage?: boolean } = {}
+  opts: {
+    linkedinDelaySeconds?: number;
+    generateImage?: boolean;
+    createLinkedinPost?: boolean;
+  } = {}
 ): Promise<PipelineResult> {
   const ownerId = process.env.OWNER_FIREBASE_UID;
   if (!ownerId) throw new Error("OWNER_FIREBASE_UID not configured");
@@ -90,11 +94,22 @@ export async function runPipeline(
     throw err;
   }
 
-  // 4. Share on LinkedIn. Delay is capped well under the function timeout.
+  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.sanjeevnode.in"}/post/${postId}`;
+
+  // 4. Share on LinkedIn (opt-out). Delay is capped well under the function timeout.
+  if (opts.createLinkedinPost === false) {
+    return {
+      postId,
+      title: post.title,
+      postUrl,
+      linkedinUrn: null,
+      linkedinPost: null,
+      linkedinError: null,
+    };
+  }
   const delay = Math.min(Math.max(opts.linkedinDelaySeconds ?? 0, 0), 120);
   if (delay > 0) await new Promise((r) => setTimeout(r, delay * 1000));
 
-  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://blog.sanjeevnode.in"}/post/${postId}`;
   const summary = `${post.linkedinSummary}\n\nRead the full post: ${postUrl}`;
   try {
     const urn = await publishSummary(summary);
